@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  pieces_position: MyString
+  total_black_pieces: 1
+  total_white_pieces: 1
+  black_long_castling: false
+  black_short_castling: false
+  white_long_castling: false
+  white_short_castling: false
+  last_movement: MyString
+  movements_available: 1
+
+two:
+  pieces_position: MyString
+  total_black_pieces: 1
+  total_white_pieces: 1
+  black_long_castling: false
+  black_short_castling: false
+  white_long_castling: false
+  white_short_castling: false
+  last_movement: MyString
+  movements_available: 1
