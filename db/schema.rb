@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_10_162801) do
+ActiveRecord::Schema.define(version: 2021_10_17_154036) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "configs", force: :cascade do |t|
+    t.bigint "player_id", null: false
+    t.bigint "difficulty_id", null: false
+    t.integer "questions"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["difficulty_id"], name: "index_configs_on_difficulty_id"
+    t.index ["player_id"], name: "index_configs_on_player_id"
+  end
+
+  create_table "difficulties", force: :cascade do |t|
+    t.string "difficulty_name"
+    t.integer "min_pieces"
+    t.integer "max_pieces"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "players", force: :cascade do |t|
     t.string "email"
@@ -39,4 +57,20 @@ ActiveRecord::Schema.define(version: 2021_10_10_162801) do
     t.index ["pieces_position", "black_long_castling", "black_short_castling", "white_long_castling", "white_short_castling", "last_movement"], name: "unique_combined_in_positions", unique: true
   end
 
+  create_table "scores", force: :cascade do |t|
+    t.bigint "player_id", null: false
+    t.bigint "difficulty_id", null: false
+    t.integer "questions"
+    t.integer "corrects"
+    t.integer "seconds"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["difficulty_id"], name: "index_scores_on_difficulty_id"
+    t.index ["player_id"], name: "index_scores_on_player_id"
+  end
+
+  add_foreign_key "configs", "difficulties"
+  add_foreign_key "configs", "players"
+  add_foreign_key "scores", "difficulties"
+  add_foreign_key "scores", "players"
 end

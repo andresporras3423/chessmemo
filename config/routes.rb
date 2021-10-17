@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   post '/player/create', to: 'player#create'
   post '/login/create', to: 'login#create'
   get '/player/test', to: 'player#test'
+  get '/position/get', to: 'position#get'
 end
