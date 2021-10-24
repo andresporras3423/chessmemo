@@ -8,12 +8,14 @@ class ScoreController < ApplicationController
         seconds: params[:seconds],
         player_id: @player.id)
     if score.valid?
+        score.save
         render json: Config.find_by_player_id(@player.id), status: :ok
     else
         render json: score.errors.messages, status: :conflict
     end
   end
 
-  def put
+  def recent
+    render json: Score.where(player_id: @player.id).order("id desc").limit(10), status: :ok
   end
 end
