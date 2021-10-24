@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   get '/difficulty/get', to: 'difficulty#get'
   get '/config/get', to: 'config#get'
   put '/config/put', to: 'config#put'
+  post '/score/create', to: 'score#create'
 end
