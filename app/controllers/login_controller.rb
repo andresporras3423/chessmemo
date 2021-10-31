@@ -14,7 +14,7 @@ class LoginController < ApplicationController
   end
 
   def get
-    render json: { "current user": @player.email }, status: :ok
+    render json: { "current user": @@player.email }, status: :ok
   end
 
   def delete

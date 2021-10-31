@@ -10,5 +10,8 @@ Rails.application.routes.draw do
   get '/config/get', to: 'config#get'
   put '/config/put', to: 'config#put'
   post '/score/create', to: 'score#create'
-  get '/score/recent', to: 'score#recent'
+  get '/score/best_global', to: 'score#best_global'
+  get '/score/best_personal', to: 'score#best_personal'
+  get '/score/recent_personal', to: 'score#recent_personal'
+  get '/score/recent_config', to: 'score#recent_config'
 end
