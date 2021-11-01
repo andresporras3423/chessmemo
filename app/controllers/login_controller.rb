@@ -1,20 +1,20 @@
+require "jwt"
+
 class LoginController < ApplicationController
   before_action :restrict_access, only: [:get, :delete]
 
   def create
     player = Player.find_by_email(params[:email])
     if player&.authenticate(params[:password])
-      cookies[:player_id] = player.id
-      player.record_signup
-      player.save
-      render json: player.as_json(only: %i[id email name remember_token]), status: :created
+      token = JWT.encode({ id: player.id }, Rails.application.credentials.dig(:secret_token), "HS256")
+      render json: { "token": token }, status: :accepted
     else
-      render json: { "error": 401 }, status: :unauthorized
+      head :unprocessable_entity
     end
   end
 
   def get
-    render json: { "current user": @@player.email }, status: :ok
+    render json: { "current player": @@player.email }, status: :ok
   end
 
   def delete
