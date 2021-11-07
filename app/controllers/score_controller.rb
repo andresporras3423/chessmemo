@@ -9,7 +9,19 @@ class ScoreController < ApplicationController
         player_id: @@player.id)
     if score.valid?
         score.save
-        render json: Config.find_by_player_id(@@player.id), status: :ok
+        global_sql = query = ActiveRecord::Base.sanitize_sql_array(["""
+          select num from 
+              (select id, ROW_NUMBER() OVER(partition by questions, difficulty_id order by corrects desc, seconds) as num 
+              from scores) as sorted where id=?
+          """, score.id])
+        global_position = ActiveRecord::Base.connection.execute(global_sql).first
+        personal_sql = query = ActiveRecord::Base.sanitize_sql_array(["""
+          select num from 
+              (select id, ROW_NUMBER() OVER(partition by questions, difficulty_id, player_id order by corrects desc, seconds) as num 
+              from scores) as sorted where id=?
+          """, score.id])
+        personal_position = ActiveRecord::Base.connection.execute(personal_sql).first
+        render json: {"global_position": global_position["num"], "personal_position": personal_position["num"]}, status: :ok
     else
         render json: score.errors.messages, status: :conflict
     end
