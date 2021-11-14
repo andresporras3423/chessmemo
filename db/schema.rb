@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_17_154036) do
+ActiveRecord::Schema.define(version: 2021_11_14_132145) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,9 +26,6 @@ ActiveRecord::Schema.define(version: 2021_10_17_154036) do
   end
 
   create_table "difficulties", force: :cascade do |t|
-    t.string "difficulty_name"
-    t.integer "min_pieces"
-    t.integer "max_pieces"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -54,6 +51,7 @@ ActiveRecord::Schema.define(version: 2021_10_17_154036) do
     t.integer "movements_available"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "next_player"
     t.index ["pieces_position", "black_long_castling", "black_short_castling", "white_long_castling", "white_short_castling", "last_movement"], name: "unique_combined_in_positions", unique: true
   end
 

@@ -23,6 +23,7 @@ class ScoreController < ApplicationController
         personal_position = ActiveRecord::Base.connection.execute(personal_sql).first
         render json: {"global_position": global_position["num"], "personal_position": personal_position["num"]}, status: :ok
     else
+      puts "CONFLICT: #{score.errors.messages}"
         render json: score.errors.messages, status: :conflict
     end
   end
