@@ -2,8 +2,9 @@ class ScoreController < ApplicationController
   before_action :restrict_access
 
   def create
-    score = Score.new(difficulty_id: params[:difficulty_id],
-        questions: params[:questions],
+    config = Config.find_by_player_id(@@player.id)
+    score = Score.new(difficulty_id: config.difficulty_id,
+        questions: config.questions,
         corrects: params[:corrects],
         seconds: params[:seconds],
         player_id: @@player.id)
@@ -34,8 +35,17 @@ class ScoreController < ApplicationController
   end
 
   def best_personal # best personal scores, current config
-    config = Config.find_by_player_id(@@player.id)
-    render json: Score.where(player_id: @@player.id, questions: config.questions, difficulty_id: config.difficulty_id).order("corrects desc, seconds").limit(10), status: :ok
+    # config = Config.find_by_player_id(@@player.id)
+    query_sql = query = ActiveRecord::Base.sanitize_sql_array(["""
+      select sc.questions, sc.corrects, sc.seconds, sc.created_at from scores as sc
+      inner join configs as co
+      on sc.player_id=co.player_id and sc.questions=co.questions and sc.difficulty_id=co.difficulty_id
+      where sc.player_id=?
+      order by sc.corrects desc, sc.seconds
+      limit 10
+      """, @@player.id])
+      best_positions = ActiveRecord::Base.connection.execute(query_sql)
+    render json: best_positions, status: :ok
   end
 
   def recent_personal # recent personal scores, any config
