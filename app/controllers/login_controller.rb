@@ -9,7 +9,7 @@ class LoginController < ApplicationController
       token = JWT.encode({ id: player.id }, Rails.application.credentials.dig(:secret_token), "HS256")
       render json: { "token": token }, status: :accepted
     else
-      head :unprocessable_entity
+      render json: {"error": player.nil? ? "email not found" : "password incorrect"}, status: :unprocessable_entity 
     end
   end
 
