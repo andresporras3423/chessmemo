@@ -1,5 +1,3 @@
-require "byebug"
-
 class BoardData
 
   attr_accessor :pieces_position, :total_black_pieces, :total_white_pieces, :black_long_castling,
