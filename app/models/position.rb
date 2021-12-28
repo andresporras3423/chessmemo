@@ -1,5 +1,5 @@
-require_relative "../../lib/positions"
-require_relative "../../lib/board_data"
+require_relative "./concerns/positions"
+require_relative "./concerns/board_data"
 
 class Position < ApplicationRecord
   def self.create_positions(save_board=true, repetitions=1)
